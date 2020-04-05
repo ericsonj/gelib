@@ -1,0 +1,4 @@
+
+IndentWidth: 1
+AlignAfterOpenBracket: true
+AllowAllParametersOfDeclarationOnNextLine: true

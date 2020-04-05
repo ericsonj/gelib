@@ -1,0 +1,18 @@
+Language: Cpp
+
+IndentWidth: 4
+ColumnLimit: 0
+
+IndentPPDirectives: AfterHash
+
+PointerAlignment: Left
+AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments: true
+
+
+#ColumnLimit: 50
+#BinPackParameters: false
+#AllowAllParametersOfDeclarationOnNextLine: false
+#AlignAfterOpenBracket: Align
+#AlignConsecutiveDeclarations: true
+#DerivePointerAlignment: false
