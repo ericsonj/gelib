@@ -5,7 +5,12 @@ vars.mk
 targets.mk
 .vscode/*
 Test/ceedling/build/*
-Test/ceedling/src/*.c
-Test/ceedling/src/*.h
+Test/ceedling/src/*
+!Test/ceedling/src/.gitkeep
 Test/ceedling/test/*.c
 Test/ceedling/test/*.h
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pydevproject

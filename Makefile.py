@@ -1,8 +1,8 @@
 import os
 import subprocess
 from os.path import basename
-from pybuild import git
-from pybuild import MKVARS
+from pymakelib import git
+from pymakelib import MKVARS
 
 
 def getProjectSettings():

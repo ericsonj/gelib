@@ -4,10 +4,11 @@
  *  Created on: Mar 11, 2020
  *      Author: Ericson Joseph
  */
-#include "GString.h"
-#include "gtypes.h"
 #include "unity.h"
 #include <string.h>
+
+#include "getypes.h"
+#include "GEString.h"
 
 GRoot gr;
 GErr  err;
@@ -22,64 +23,64 @@ void tearDown(void) {
 
 void test_g_string_sized_new() {
 
-    GString* str = g_string_sized_new(&gr, 128, &err);
+    GEString* str = ge_string_sized_new(&gr, 128, &err);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT(str != NULL);
     TEST_ASSERT(str->len == 0);
     TEST_ASSERT(str->allocared_len == MALLOC_BLOCK(128))
-    g_string_free(&gr, str, &err);
+    ge_string_free(&gr, str, &err);
     TEST_ASSERT(err == gOK)
 }
 
 void test_g_string_new() {
 
-    const gchar* kstr    = "Testing new string";
-    gsize        kstrlen = strlen(kstr);
+    const gechar* kstr    = "Testing new string";
+    gesize        kstrlen = strlen(kstr);
 
-    GString* str = g_string_new(&gr, kstr, &err);
+    GEString* str = ge_string_new(&gr, kstr, &err);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT(str != NULL);
     TEST_ASSERT_EQUAL_STRING(kstr, str->str);
     TEST_ASSERT_EQUAL_INT(kstrlen, str->len);
-    g_string_free(&gr, str, &err);
+    ge_string_free(&gr, str, &err);
     TEST_ASSERT(err == gOK)
 }
 
 void test_g_string_overwrite() {
 
-	const gchar* strtest = "Hello testing";
-	gsize pos = 6;
-	const gchar* strow = "T";
-	const gchar* expected = "Hello Testing";
+	const gechar* strtest = "Hello testing";
+	gesize pos = 6;
+	const gechar* strow = "T";
+	const gechar* expected = "Hello Testing";
 
-    GString* str = g_string_new(&gr, strtest, &err);
+    GEString* str = ge_string_new(&gr, strtest, &err);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT(str != NULL);
-    str = g_string_overwrite(&gr, str, pos, strow, &err);
+    str = ge_string_overwrite(&gr, str, pos, strow, &err);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT_EQUAL_STRING(expected, str->str);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT_EQUAL_INT(strlen(expected), str->len);
-    g_string_free(&gr, str, &err);
+    ge_string_free(&gr, str, &err);
     TEST_ASSERT(err == gOK);
 
 }
 
 void test_g_string_erase(){
-	const gchar* strtest = "Hello testing";
-	gsize pos = 5;
-	gsize len = 8;
-	const gchar* expected = "Hello";
+	const gechar* strtest = "Hello testing";
+	gesize pos = 5;
+	gesize len = 8;
+	const gechar* expected = "Hello";
 
-    GString* str = g_string_new(&gr, strtest, &err);
+    GEString* str = ge_string_new(&gr, strtest, &err);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT(str != NULL);
-    str = g_string_erase(&gr, str, pos, len, &err);
+    str = ge_string_erase(&gr, str, pos, len, &err);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT_EQUAL_STRING(expected, str->str);
     TEST_ASSERT(err == gOK);
     TEST_ASSERT_EQUAL_INT(strlen(expected), str->len);
-    g_string_free(&gr, str, &err);
+    ge_string_free(&gr, str, &err);
     TEST_ASSERT(err == gOK);
 }
 

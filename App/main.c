@@ -31,8 +31,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <StaticMemory.h>
-#include "GString.h"
 #include "regex.h"
+
+#include "../GEString/GEString.h"
 
 static MemDinamicPool mempool;
 
@@ -71,28 +72,28 @@ int main() {
 
 	GErr err;
 	GRoot root;
-	root.g_free = MEM_free;
-	root.g_malloc = MEM_malloc;
+	root.ge_free = MEM_free;
+	root.ge_malloc = MEM_malloc;
 
 	int j;
 	for (j = 0; j < 10000; ++j) {
 
-		GString *str = g_string_new(&root, "Hello World GString!!!", &err);
+		GEString *str = ge_string_new(&root, "Hello World GString!!!", &err);
 		int i;
 		for (i = 0; i < 10; ++i) {
-			str = g_string_append(&root, str, " Add more ", &err);
+			str = ge_string_append(&root, str, " Add more ", &err);
 		}
-		str = g_string_append(&root, str, "\r\n", &err);
+		str = ge_string_append(&root, str, "\r\n", &err);
 
-		g_string_append_printf(&root, str, &err, "%s", "HOLAAAAAA");
+		ge_string_append_printf(&root, str, &err, "%s", "HOLAAAAAA");
 
-		g_string_free(&root, str, &err);
+		ge_string_free(&root, str, &err);
 
 	}
 
-    GString* str1 = g_string_new(&root, "Hello testing", &err);
-    str1 = g_string_overwrite(&root, str1, 6, "programmer", &err);
-    g_string_free(&root, str1, &err);
+    GEString* str1 = ge_string_new(&root, "Hello testing", &err);
+    str1 = ge_string_overwrite(&root, str1, 6, "programmer", &err);
+    ge_string_free(&root, str1, &err);
 
     register char *p = re_comp("^GET [a-zA-Z0-9\\/\\.\\_\\?\\&\\=]+ HTTP/1.[10]");
 

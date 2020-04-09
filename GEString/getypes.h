@@ -6,24 +6,24 @@
  */
 /*<test>*/
 
-#ifndef GSTRING_GTYPES_H_
-#define GSTRING_GTYPES_H_
+#ifndef GESTRING_GETYPES_H_
+#define GESTRING_GETYPES_H_
 
 #include <stdint.h>
 
-#define MIN(a, b) \
+#define GE_MIN(a, b) \
         ((a < b) ? a : b)
 
 #define MALLOC_BLOCK(l) \
         (((((l) / 32) + 1) * 32))
 
 
-typedef char     gchar;
-typedef int32_t  gssize;
-typedef uint32_t gsize;
-typedef uint32_t gint;
+typedef char     gechar;
+typedef int32_t  gessize;
+typedef uint32_t gesize;
+typedef uint32_t geint;
 
 
-#endif /* GSTRING_GTYPES_H_ */
+#endif /* GESTRING_GETYPES_H_ */
 
 /*</test>*/

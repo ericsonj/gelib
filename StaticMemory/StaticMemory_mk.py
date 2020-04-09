@@ -1,4 +1,4 @@
-from pybuild.Module import ModuleHandle 
+from pymakelib.Module import ModuleHandle 
 
 
 def getSrcs(mh: ModuleHandle):
