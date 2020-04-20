@@ -52,6 +52,7 @@ GEString* ge_string_sized_new(GRoot* root, gesize dfl_size, GErr* err) {
 
     memset(newStr->str, 0, newStr->allocared_len);
 
+    (*err) = gOK;
     return newStr;
 }
 
@@ -179,7 +180,8 @@ GEString* ge_string_truncate(GEString* string, gesize len) {
     }
 
     string->len              = GE_MIN(len, string->len);
-    string->str[string->len] = 0;
+    string->str[string->len] = '\0';
+    memset(&(string->str[string->len + 1]),0, string->allocared_len - string->len);
 
     return string;
 }
