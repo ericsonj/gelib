@@ -14,8 +14,8 @@ GRoot gr;
 GErr  err;
 
 void setUp(void) {
-    gr.g_free   = free;
-    gr.g_malloc = malloc;
+    gr.ge_free   = free;
+    gr.ge_malloc = malloc;
 }
 
 void tearDown(void) {
@@ -85,7 +85,21 @@ void test_g_string_erase(){
 }
 
 void test_g_string_append() {
-    TEST_IGNORE_MESSAGE("implement me!");
+
+	GEString* str = ge_string_sized_new(&gr, 32, &err);
+    TEST_ASSERT(err == gOK);
+    TEST_ASSERT(str != NULL);
+    ge_string_append_printf(&gr, str, &err, "Add string ");
+    TEST_ASSERT(err == gOK);
+    ge_string_append_printf(&gr, str, &err, "Add number %d ", 10);
+    TEST_ASSERT(err == gOK);
+    ge_string_append_printf(&gr, str, &err, "Add string %s ", "Hola");
+    TEST_ASSERT(err == gOK);
+    ge_string_append_printf(&gr, str, &err, "Add float %4,2f ", 3.14);
+    TEST_ASSERT(err == gOK);
+    ge_string_free(&gr, str, &err);
+    TEST_ASSERT(err == gOK);
+
 }
 
 //int main(void){

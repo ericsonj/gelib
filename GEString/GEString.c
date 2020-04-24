@@ -125,13 +125,13 @@ void g_string_append_vprintf(GRoot* root, GEString* string, GErr* err, const gec
         return;
     }
 
-    gesize len = 0;
-    len       = vsnprintf(NULL, 0, format, cpy);
+    gesize len = vsnprintf(NULL, 0, format, cpy);
 
     if (len >= 0) {
-        if (string->len + len > string->allocared_len) {
+        if (string->len + len >= string->allocared_len) {
             gesize  total  = string->len + len;
             gechar* newstr = root->ge_malloc(MALLOC_BLOCK(total));
+            memset(newstr, 0, MALLOC_BLOCK(total));
             memcpy(newstr, string->str, string->len);
             vsnprintf(&(newstr[string->len]), len + 1, format, args);
             root->ge_free(string->str);
