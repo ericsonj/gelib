@@ -33,7 +33,9 @@
 #include <StaticMemory.h>
 #include "regex.h"
 
-#include "../GEString/GEString.h"
+
+#include "GEString.h"
+#include "GEStrTokenizer.h"
 
 static MemDinamicPool mempool;
 
@@ -91,15 +93,18 @@ int main() {
 
 	}
 
-    GEString* str1 = ge_string_new(&root, "Hello testing", &err);
-    str1 = ge_string_overwrite(&root, str1, 6, "programmer", &err);
-    ge_string_free(&root, str1, &err);
+	GEString* str = ge_string_new(&root, "Hello;Would;GEStrTk!!!!;;;;;;;", &err);
 
-    register char *p = re_comp("^GET [a-zA-Z0-9\\/\\.\\_\\?\\&\\=]+ HTTP/1.[10]");
+	GEStrTk* token = ge_strtk_new(&root, str, ";", &err);
 
-    if(re_exec("GET /menu/index_1.html?name=ericson HTTP/1.1")){
-    	printf("OK");
-    }
+	GEStringRef ref;
+
+	while ((ref = ge_strtk_nextToken(str, token, &err)).str != NULL) {
+		printf("%.*s\n", ref.len, ref.str);
+	}
+
+	ge_string_free(&root, str, &err);
+	ge_strtk_free(&root, token, &err);
 
 	return 0;
 }

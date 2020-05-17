@@ -63,7 +63,8 @@ LIBRARIES = ['`pkg-config --libs ncurses`']
 def getCompilerOpts():
 
     PROJECT_DEF = {
-        'TESTABLE':     1
+        'TESTABLE':             1,
+        'UNITY_INT_WIDTH':      32
     }
 
     return {

@@ -38,12 +38,21 @@ enum _GErr {
 typedef enum _GErr GErr;
 
 struct _GEString {
-    gechar*   str;
+    gechar*  str;
     uint16_t len;
-    gesize    allocared_len;
+    gesize   allocared_len;
 };
 
 typedef struct _GEString GEString;
+
+#define GEString_isEmpty(_gestr_)		( (_gestr_.str == NULL || _gestr_.len == 0) ? true : false )
+
+struct _GEStringRef {
+    gechar* str;
+    gesize  len;
+};
+
+typedef struct _GEStringRef GEStringRef;
 
 GEString* ge_string_new(GRoot* root, const gechar* str, GErr* err);
 
@@ -51,7 +60,13 @@ GEString* ge_string_sized_new(GRoot* root, gesize dfl_size, GErr* err);
 
 GEString* ge_string_insert(GRoot* root, GEString* string, gesize idx, const gechar* val, GErr* err);
 
+GEString* ge_string_insert_c(GRoot* root, GEString* string, gesize idx, gechar val, GErr* err);
+
+GEString* ge_string_insert_len(GRoot* root, GEString* string, gesize idx, const gechar* val, gessize len, GErr* err);
+
 GEString* ge_string_append(GRoot* root, GEString* string, const gechar* val, GErr* err);
+
+GEString* ge_string_append_c(GRoot* root, GEString* string, gechar c, GErr* err);
 
 void ge_string_printf(GRoot* root, GEString* string, GErr* err, const gechar* format, ...);
 

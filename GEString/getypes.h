@@ -10,6 +10,7 @@
 #define GESTRING_GETYPES_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define GE_MIN(a, b) \
         ((a < b) ? a : b)
@@ -17,12 +18,11 @@
 #define MALLOC_BLOCK(l) \
         (((((l) / 32) + 1) * 32))
 
-
-typedef char     gechar;
-typedef int32_t  gessize;
+typedef char gechar;
+typedef int32_t gessize;
 typedef uint32_t gesize;
-typedef uint32_t geint;
-
+typedef int32_t geint;
+typedef bool gebool;
 
 #endif /* GESTRING_GETYPES_H_ */
 

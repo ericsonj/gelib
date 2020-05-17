@@ -56,16 +56,22 @@ GEString* ge_string_sized_new(GRoot* root, gesize dfl_size, GErr* err) {
     return newStr;
 }
 
-GEString* ge_string_insert(GRoot* root, GEString* string, gesize idx, const gechar* val, GErr* err) {
+GEString* ge_string_insert_len(GRoot* root, GEString* string, gesize idx, const gechar* val, gessize len, GErr* err) {
 
-    if (idx > string->len || idx < 0) {
+	if (idx > string->len || idx < 0) {
         (*err) = gIdxErr;
         return NULL;
     }
 
-    GEString* res      = NULL;
-    uint16_t valLen   = strlen(val);
+    GEString* res     = NULL;
+    uint16_t valLenCk = strlen(val);
+    uint16_t valLen   = len;
     uint16_t totalLen = string->len + valLen;
+
+    if (valLen > valLenCk) {
+    	(*err) = gIdxErr;
+    	return NULL;
+    }
 
     if (totalLen > string->allocared_len) {
 
@@ -112,8 +118,71 @@ GEString* ge_string_insert(GRoot* root, GEString* string, gesize idx, const gech
     return res;
 }
 
+GEString* ge_string_insert_c(GRoot* root, GEString* string, gesize idx, gechar c, GErr* err) {
+
+	if (idx > string->len || idx < 0) {
+        (*err) = gIdxErr;
+        return NULL;
+    }
+
+	GEString* res     = NULL;
+	uint16_t valLen   = 1;
+	uint16_t totalLen = string->len + valLen;
+
+    if (totalLen > string->allocared_len) {
+
+        /* g_string_sized_new*/
+        gechar* newStr = root->ge_malloc(MALLOC_BLOCK(totalLen));
+        if (newStr == gOK) {
+            (*err) = gMemErr;
+            return NULL;
+        }
+
+        /*insert into string*/
+        uint16_t index = idx;
+        strncpy(newStr, string->str, idx);
+        string->str[index] = c;
+        index = index + valLen;
+        strncpy(&(newStr[index]), &(string->str[idx]), string->len - idx);
+
+        root->ge_free(string->str);
+
+        string->str           = newStr;
+        string->len           = totalLen;
+        string->allocared_len = MALLOC_BLOCK(totalLen);
+
+        res = string;
+
+    } else {
+
+        uint16_t index = idx;
+        gechar*   tmp   = root->ge_malloc(string->allocared_len);
+        memcpy(tmp, string->str, string->len);
+        strncpy(string->str, tmp, idx);
+        string->str[index] = c;
+        index = index + valLen;
+        strncpy(&(string->str[index]), &(tmp[idx]), string->len - idx);
+        string->len = totalLen;
+
+        res = string;
+
+        root->ge_free(tmp);
+    }
+
+    (*err) = gOK;
+    return res;
+}
+
+GEString* ge_string_insert(GRoot* root, GEString* string, gesize idx, const gechar* val, GErr* err) {
+	return ge_string_insert_len(root, string, idx, val, strlen(val), err);
+}
+
 GEString* ge_string_append(GRoot* root, GEString* string, const gechar* val, GErr* err) {
     return ge_string_insert(root, string, string->len, val, err);
+}
+
+GEString* ge_string_append_c(GRoot* root, GEString* string, gechar c, GErr* err) {
+	return ge_string_insert_c(root, string, string->len, c, err);
 }
 
 void g_string_append_vprintf(GRoot* root, GEString* string, GErr* err, const gechar* format, va_list cpy, va_list args) {

@@ -9,6 +9,7 @@
 
 #include "getypes.h"
 #include "GEString.h"
+#include "GEStrTokenizer.h"
 
 GRoot gr;
 GErr  err;
@@ -99,6 +100,47 @@ void test_g_string_append() {
     TEST_ASSERT(err == gOK);
     ge_string_free(&gr, str, &err);
     TEST_ASSERT(err == gOK);
+
+}
+
+void test_ge_strtk_new() {
+
+	GEString *str = ge_string_new(&gr, "Hello;Would;GEStrTk!!!!;;;;;;;", &err);
+	GEStrTk *token = ge_strtk_new(&gr, str, ";", &err);
+	TEST_ASSERT(err == gOK);
+	TEST_ASSERT(token != NULL);
+	ge_strtk_free(&gr, token, &err);
+	TEST_ASSERT(err == gOK);
+	ge_string_free(&gr, str, &err);
+	TEST_ASSERT(err == gOK);
+
+}
+
+
+void test_ge_strtk_nextToken() {
+
+	GEString *str = ge_string_new(&gr, "Hello\r\nWould\r\nGEStrTk!!!!\r\n", &err);
+	GEStrTk *token = ge_strtk_new(&gr, str, "\r\n", &err);
+	TEST_ASSERT(err == gOK);
+	TEST_ASSERT(token != NULL);
+
+	GEStringRef ref = ge_strtk_nextToken(str, token, &err);
+	if (!GEString_isEmpty(ref)) {
+		TEST_ASSERT_EQUAL_MEMORY("Hello", ref.str, ref.len);
+	}
+	ref = ge_strtk_nextToken(str, token, &err);
+	if (!GEString_isEmpty(ref)) {
+		TEST_ASSERT_EQUAL_MEMORY("Would", ref.str, ref.len);
+	}
+	ref = ge_strtk_nextToken(str, token, &err);
+	if (!GEString_isEmpty(ref)) {
+		TEST_ASSERT_EQUAL_MEMORY("GEStrTk!!!!", ref.str, ref.len);
+	}
+
+	ge_strtk_free(&gr, token, &err);
+	TEST_ASSERT(err == gOK);
+	ge_string_free(&gr, str, &err);
+	TEST_ASSERT(err == gOK);
 
 }
 
