@@ -32,10 +32,7 @@
 #include <stdlib.h>
 #include <StaticMemory.h>
 #include "regex.h"
-
-
-#include "GEString.h"
-#include "GEStrTokenizer.h"
+#include "estring.h"
 
 static MemDinamicPool mempool;
 
@@ -72,39 +69,9 @@ int main() {
 
 	MEM_pool_free(&mempool);
 
-	GErr err;
-	GRoot root;
-	root.ge_free = MEM_free;
-	root.ge_malloc = MEM_malloc;
 
-	int j;
-	for (j = 0; j < 10000; ++j) {
+	EString* test = e_str_sized_new(10);
 
-		GEString *str = ge_string_new(&root, "Hello World GString!!!", &err);
-		int i;
-		for (i = 0; i < 10; ++i) {
-			str = ge_string_append(&root, str, " Add more ", &err);
-		}
-		str = ge_string_append(&root, str, "\r\n", &err);
-
-		ge_string_append_printf(&root, str, &err, "%s", "HOLAAAAAA");
-
-		ge_string_free(&root, str, &err);
-
-	}
-
-	GEString* str = ge_string_new(&root, "Hello;Would;GEStrTk!!!!;;;;;;;", &err);
-
-	GEStrTk* token = ge_strtk_new(&root, str, ";", &err);
-
-	GEStringRef ref;
-
-	while ((ref = ge_strtk_nextToken(str, token, &err)).str != NULL) {
-		printf("%.*s\n", ref.len, ref.str);
-	}
-
-	ge_string_free(&root, str, &err);
-	ge_strtk_free(&root, token, &err);
 
 	return 0;
 }

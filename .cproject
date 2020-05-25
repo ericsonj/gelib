@@ -38,6 +38,8 @@
 <listOptionValue builtIn="false" value="/var/lib/gems/2.5.0/gems/ceedling-0.29.1/vendor/unity/src"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/regex}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/GEString}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/App}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/estring}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/StaticMemory}&quot;"/>
 									<!--wildcard_c_includes-->
 
@@ -57,6 +59,8 @@
 <listOptionValue builtIn="false" value="/var/lib/gems/2.5.0/gems/ceedling-0.29.1/vendor/unity/src"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/regex}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/GEString}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/App}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/estring}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/gelib/StaticMemory}&quot;"/>
 									<!--wildcard_c_includes-->
 								</option>
