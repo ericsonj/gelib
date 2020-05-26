@@ -26,5 +26,6 @@ typedef uint32_t euint;
 typedef void* epointer;
 
 typedef size_t esize;
+typedef ssize_t essize;
 
 #endif /* ESTRING_ETYPES_H_ */
