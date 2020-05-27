@@ -12,6 +12,8 @@
 
 epointer e_realloc(epointer mem, esize bytes, esize new_bytes);
 
+epointer e_memmove(epointer to, const epointer from, esize size);
+
 epointer e_malloc(esize size);
 
 void e_free(epointer ptr);

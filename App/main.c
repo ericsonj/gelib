@@ -33,29 +33,39 @@
 #include <StaticMemory.h>
 #include "regex.h"
 #include "estring.h"
+#include "main.h"
 
 static MemDinamicPool mempool;
 
+void* App_staticMalloc(size_t size){
+	return MEM_pool_malloc(&mempool, size);
+}
+
+
+void App_staticFree(void* ptr){
+	MEM_free(ptr);
+}
+
 int main() {
 	mempool.pool32.addr = malloc(
-			1 * (BLOCK_SIZE_32 + sizeof(struct mem_block_s)));
-	mempool.pool32.size = 1 * (BLOCK_SIZE_32 + sizeof(struct mem_block_s));
+			10 * (BLOCK_SIZE_32 + sizeof(struct mem_block_s)));
+	mempool.pool32.size = 10 * (BLOCK_SIZE_32 + sizeof(struct mem_block_s));
 
 	mempool.pool64.addr = malloc(
-			1 * (BLOCK_SIZE_64 + sizeof(struct mem_block_s)));
-	mempool.pool64.size = 1 * (BLOCK_SIZE_64 + sizeof(struct mem_block_s));
+			10 * (BLOCK_SIZE_64 + sizeof(struct mem_block_s)));
+	mempool.pool64.size = 10 * (BLOCK_SIZE_64 + sizeof(struct mem_block_s));
 
-	mempool.pool128.addr = malloc(
-			1 * (BLOCK_SIZE_128 + sizeof(struct mem_block_s)));
-	mempool.pool128.size = 1 * (BLOCK_SIZE_128 + sizeof(struct mem_block_s));
-
-	mempool.pool256.addr = malloc(
-			1 * (BLOCK_SIZE_256 + sizeof(struct mem_block_s)));
-	mempool.pool256.size = 1 * (BLOCK_SIZE_256 + sizeof(struct mem_block_s));
-
-	mempool.pool512.addr = malloc(
-			1 * (BLOCK_SIZE_512 + sizeof(struct mem_block_s)));
-	mempool.pool512.size = 1 * (BLOCK_SIZE_512 + sizeof(struct mem_block_s));
+//	mempool.pool128.addr = malloc(
+//			1 * (BLOCK_SIZE_128 + sizeof(struct mem_block_s)));
+//	mempool.pool128.size = 1 * (BLOCK_SIZE_128 + sizeof(struct mem_block_s));
+//
+//	mempool.pool256.addr = malloc(
+//			1 * (BLOCK_SIZE_256 + sizeof(struct mem_block_s)));
+//	mempool.pool256.size = 1 * (BLOCK_SIZE_256 + sizeof(struct mem_block_s));
+//
+//	mempool.pool512.addr = malloc(
+//			1 * (BLOCK_SIZE_512 + sizeof(struct mem_block_s)));
+//	mempool.pool512.size = 1 * (BLOCK_SIZE_512 + sizeof(struct mem_block_s));
 
 	mempool.pool1024.addr = NULL;
 	mempool.pool1024.size = 0;
@@ -64,14 +74,14 @@ int main() {
 	MEM_init();
 
 	char *msg = MEM_pool_malloc(&mempool, 20);
-
 	MEM_free(msg);
 
+	EString* test = e_str_new("Buffer de prueba para que lueg");
+	e_str_printf(test, "Test: %s", "HOLAA");
+	e_str_append_printf(test, "+++HOLASSS");
+
+
+
 	MEM_pool_free(&mempool);
-
-
-	EString* test = e_str_sized_new(10);
-
-
 	return 0;
 }

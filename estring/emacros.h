@@ -8,6 +8,14 @@
 #ifndef ESTRING_EMACROS_H_
 #define ESTRING_EMACROS_H_
 
+#ifndef	FALSE
+#define	FALSE	(0)
+#endif
+
+#ifndef	TRUE
+#define	TRUE	(!FALSE)
+#endif
+
 #define EMAX(a, b)  (((a) > (b)) ? (a) : (b))
 #define EMIN(a, b)  (((a) < (b)) ? (a) : (b))
 
@@ -26,5 +34,16 @@
         return (val);					\
     }									\
   } E_STMT_END
+
+#define e_return_if_fail(expr)			\
+  E_STMT_START {						\
+    if (E_LIKELY (expr))				\
+    { }									\
+    else								\
+    {									\
+        return;							\
+    } 									\
+  } E_STMT_END
+
 
 #endif /* ESTRING_EMACROS_H_ */
