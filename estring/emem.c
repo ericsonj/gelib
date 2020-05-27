@@ -26,15 +26,15 @@ epointer e_realloc(epointer mem, esize bytes, esize new_bytes) {
 
 epointer e_memmove(epointer to, const epointer from, esize size) {
     echar* prgcBuffer = NULL;
-    echar* pcSource   = (echar*)to;
-    echar* pcDstn     = (echar*)from;
+    echar* pcSource   = (echar*)from;
+    echar* pcDstn     = (echar*)to;
     prgcBuffer = (echar*)e_malloc(size);
     if (prgcBuffer == NULL) {
         return NULL;
     } else {
         memcpy(prgcBuffer, pcSource, size);
         memcpy(pcDstn, prgcBuffer, size);
-        free(prgcBuffer);
+        e_free(prgcBuffer);
     }
     return from;
 }

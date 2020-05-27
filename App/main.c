@@ -79,8 +79,8 @@ int main() {
 	EString* test = e_str_new("Buffer de prueba para que lueg");
 	e_str_printf(test, "Test: %s", "HOLAA");
 	e_str_append_printf(test, "+++HOLASSS");
-
-
+	e_str_assign(test, "HOLA");
+	e_str_insert_c(test, 1, 'c');
 
 	MEM_pool_free(&mempool);
 	return 0;
