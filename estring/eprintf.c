@@ -12,12 +12,6 @@
 #include "emacros.h"
 #include "emem.h"
 
-static int _g_gnulib_vasprintf (char **result, char const *format, va_list args)
-{
-  size_t length;
-  length = vsnprintf (NULL, 0, format, args);
-  return length;
-}
 
 #define G_VA_COPY(ap1, ap2)	  (*(ap1) = *(ap2))
 

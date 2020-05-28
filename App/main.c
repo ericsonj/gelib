@@ -76,6 +76,8 @@ int main() {
 	char *msg = MEM_pool_malloc(&mempool, 20);
 	MEM_free(msg);
 
+
+
 	EString* test = e_str_new("Buffer de prueba para que lueg");
 	e_str_printf(test, "Test: %s", "HOLAA");
 	e_str_append_printf(test, "+++HOLASSS");

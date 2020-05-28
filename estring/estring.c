@@ -23,7 +23,13 @@ static void e_str_maybe_expand(EString* string, esize len) {
     }
 }
 
-
+/**
+ * \brief Creates a new #GStrin
+ *
+ * @param init the initial text to copy into the string, or %NULL to
+ * start with an empty string
+ * @return
+ */
 EString* e_str_new(const echar* init) {
     EString* string;
 
@@ -41,6 +47,20 @@ EString* e_str_new(const echar* init) {
     return string;
 }
 
+EString* e_str_new_len(const echar* init, essize len) {
+    EString* string;
+
+    if (len < 0)
+        return e_str_new(init);
+    else {
+        string = e_str_sized_new(len);
+
+        if (init)
+            e_str_append_len(string, init, len);
+
+        return string;
+    }
+}
 
 EString* e_str_sized_new(esize dfl_size) {
     EString* string = e_slice_new(EString);
@@ -54,7 +74,6 @@ EString* e_str_sized_new(esize dfl_size) {
 
     return string;
 }
-
 
 echar* e_str_free(EString* string, eboolean free_segment) {
     echar* segment;
@@ -72,9 +91,8 @@ echar* e_str_free(EString* string, eboolean free_segment) {
     return segment;
 }
 
-
-eboolean g_string_equal(const EString* v,
-                        const EString* v2) {
+eboolean e_str_equal(const EString* v,
+                     const EString* v2) {
     echar *  p, *q;
     EString* string1 = (EString*)v;
     EString* string2 = (EString*)v2;
@@ -95,8 +113,7 @@ eboolean g_string_equal(const EString* v,
     return TRUE;
 }
 
-
-euint g_string_hash (const EString *str){
+euint e_str_hash(const EString* str) {
     const echar* p = str->str;
     esize        n = str->len;
     euint        h = 0;
@@ -109,9 +126,8 @@ euint g_string_hash (const EString *str){
     return h;
 }
 
-
 EString* e_str_assign(EString*     string,
-             const echar* rval) {
+                      const echar* rval) {
     e_return_val_if_fail(string != NULL, NULL);
     e_return_val_if_fail(rval != NULL, string);
 
@@ -127,24 +143,26 @@ EString* e_str_assign(EString*     string,
     return string;
 }
 
-
 EString*
 e_str_append(EString*     string,
              const echar* val) {
     return e_str_insert_len(string, -1, val, -1);
 }
 
-
 EString* e_str_append_len(EString* string, const echar* val, essize len) {
     return e_str_insert_len(string, -1, val, len);
 }
-
 
 EString* e_str_append_c(EString* string, echar c) {
     e_return_val_if_fail(string != NULL, NULL);
     return e_str_insert_c(string, -1, c);
 }
 
+EString* e_str_insert(EString*     string,
+                      essize       pos,
+                      const echar* val) {
+    return e_str_insert_len(string, pos, val, -1);
+}
 
 EString* e_str_insert_len(EString* string, essize pos, const echar* val, essize len) {
     esize len_unsigned, pos_unsigned;
@@ -220,7 +238,6 @@ EString* e_str_insert_len(EString* string, essize pos, const echar* val, essize 
     return string;
 }
 
-
 EString* e_str_insert_c(EString* string,
                         essize   pos,
                         echar    c) {
@@ -250,7 +267,6 @@ EString* e_str_insert_c(EString* string,
     return string;
 }
 
-
 EString* e_str_truncate(EString* string, esize len) {
     e_return_val_if_fail(string != NULL, NULL);
 
@@ -259,10 +275,19 @@ EString* e_str_truncate(EString* string, esize len) {
     return string;
 }
 
+EString* e_str_set_size(EString* string, esize len) {
+    e_return_val_if_fail(string != NULL, NULL);
 
-void e_str_printf(EString*     string,
-                  const echar* format,
-                  ...) {
+    if (len >= string->allocated_len)
+        e_str_maybe_expand(string, len - string->len);
+
+    string->len      = len;
+    string->str[len] = 0;
+
+    return string;
+}
+
+void e_str_printf(EString* string, const echar* format, ...) {
     va_list args;
 
     e_str_truncate(string, 0);
@@ -271,7 +296,6 @@ void e_str_printf(EString*     string,
     e_str_append_vprintf(string, format, args);
     va_end(args);
 }
-
 
 void e_str_append_vprintf(EString*     string,
                           const echar* format,
@@ -292,12 +316,93 @@ void e_str_append_vprintf(EString*     string,
     }
 }
 
-
-void e_str_append_printf(EString*     string,
-                         const echar* format,
-                         ...) {
+void e_str_append_printf(EString* string, const echar* format, ...) {
     va_list args;
     va_start(args, format);
     e_str_append_vprintf(string, format, args);
     va_end(args);
+}
+
+EString* e_str_prepend(EString* string, const echar* val) {
+    return e_str_insert_len(string, 0, val, -1);
+}
+
+EString* e_str_prepend_c(EString* string, echar c) {
+    e_return_val_if_fail(string != NULL, NULL);
+    return e_str_insert_c(string, 0, c);
+}
+
+EString* e_str_prepend_len(EString*     string,
+                           const echar* val,
+                           essize       len) {
+    return e_str_insert_len(string, 0, val, len);
+}
+
+EString* e_str_overwrite(EString*     string,
+                         esize        pos,
+                         const echar* val) {
+    e_return_val_if_fail(val != NULL, string);
+    return e_str_overwrite_len(string, pos, val, strlen(val));
+}
+
+EString* e_str_overwrite_len(EString*     string,
+                             esize        pos,
+                             const echar* val,
+                             essize       len) {
+    esize end;
+
+    e_return_val_if_fail(string != NULL, NULL);
+
+    if (!len)
+        return string;
+
+    e_return_val_if_fail(val != NULL, string);
+    e_return_val_if_fail(pos <= string->len, string);
+
+    if (len < 0)
+        len = strlen(val);
+
+    end = pos + len;
+
+    if (end > string->len)
+        e_str_maybe_expand(string, end - string->len);
+
+    memcpy(string->str + pos, val, len);
+
+    if (end > string->len) {
+        string->str[end] = '\0';
+        string->len      = end;
+    }
+
+    return string;
+}
+
+EString* e_str_erase(EString* string,
+                     essize   pos,
+                     essize   len) {
+    esize len_unsigned, pos_unsigned;
+
+    e_return_val_if_fail(string != NULL, NULL);
+    e_return_val_if_fail(pos >= 0, string);
+    pos_unsigned = pos;
+
+    e_return_val_if_fail(pos_unsigned <= string->len, string);
+
+    if (len < 0)
+        len_unsigned = string->len - pos_unsigned;
+    else {
+        len_unsigned = len;
+        e_return_val_if_fail(pos_unsigned + len_unsigned <= string->len, string);
+
+        if (pos_unsigned + len_unsigned < string->len)
+            memmove(string->str + pos_unsigned,
+                    string->str + pos_unsigned + len_unsigned,
+                    string->len - (pos_unsigned + len_unsigned));
+    }
+
+    string->len -= len_unsigned;
+
+    string->str[string->len] = 0;
+
+    return string;
 }

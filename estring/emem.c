@@ -24,10 +24,10 @@ epointer e_realloc(epointer mem, esize bytes, esize new_bytes) {
 }
 
 
-epointer e_memmove(epointer to, const epointer from, esize size) {
+epointer e_memmove(epointer from, const epointer to, esize size) {
     echar* prgcBuffer = NULL;
-    echar* pcSource   = (echar*)from;
-    echar* pcDstn     = (echar*)to;
+    echar* pcSource   = (echar*)to;
+    echar* pcDstn     = (echar*)from;
     prgcBuffer = (echar*)e_malloc(size);
     if (prgcBuffer == NULL) {
         return NULL;
