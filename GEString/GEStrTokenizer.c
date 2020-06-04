@@ -36,6 +36,7 @@ GEStrTk* ge_strtk_new(GRoot* root, GEString* gestr, const char* token, GErr *err
 }
 
 void ge_strtk_free(GRoot *root, GEStrTk* tokenizer, GErr* err) {
+	ge_string_free(root, tokenizer->token, err);
 	root->ge_free(tokenizer);
 	(*err) = gOK;
 }
